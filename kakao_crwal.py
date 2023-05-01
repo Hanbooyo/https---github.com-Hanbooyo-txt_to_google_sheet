@@ -95,7 +95,7 @@ with open("./Talk_2023.5.1 12_15-6.txt", "r", encoding='utf-8') as f:
             print(name)
         elif line.startswith("2)나이"):
             age = line.split(":")[1].strip()
-        elif line.sㄴtartswith("3)사는곳"):
+        elif line.startswith("3)사는곳"):
             address = line.split(":")[1].strip()
         elif line.startswith("4)러닝경험"):
             if ":" not in line:

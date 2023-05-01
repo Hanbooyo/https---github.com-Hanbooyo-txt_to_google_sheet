@@ -77,14 +77,17 @@ with open('./Talk_2023.5.1 12_15-1.txt', 'r', encoding="utf-8") as f:
     data = {}
     for line in f:
         line = line.strip()
-        if line.startswith("1)이름"):
+        print(line)
+        if "1)이름" in line: #startswith가 아니었음
             try:
-                data['name'] = line.split(":")[1].strip()
+                data['name'] = line.split(":")[3].strip()
                 line = f.readline().strip()
-                print(data['name'])
+                if data['name'] != "":
+                    print("name",data['name'])
+                    time.sleep(3)
             except IndexError:
                 continue
-            if data['name']:
+            if data['name'] and data['name'] != '방장봇':
                 if line.startswith('2)'):
                     data['age'] = line.split(':')[1].strip()
                     print(data['age'])
@@ -94,16 +97,19 @@ with open('./Talk_2023.5.1 12_15-1.txt', 'r', encoding="utf-8") as f:
                         print(data['address'])
                         line = f.readline().strip()
                         if line.startswith('4)'):
-                            data['running_exp'] = line.split(':')[1].strip()
+                            data['running_exp'] = line.split(':')[1]
                             print(data['running_exp'])
                             line = f.readline().strip()
                             if line.startswith('5)'):
                                 data['running_time'] = line.split(':')[1].strip()
+                                print(data['running_time'])
                                 line = f.readline().strip()
                                 if line.startswith('6)'):
                                     data['entry_path'] = line.split(':')[1].strip()
+                                    print(data['entry_path'])
                                     line = f.readline().strip()
                                     if line.startswith('20'):
                                         add_message_data_to_sheet_continuously(data)
                                         data = {}
+                                        time.sleep(3)
                                         continue      
