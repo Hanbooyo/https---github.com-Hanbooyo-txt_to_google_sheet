@@ -17,37 +17,22 @@ service = build('sheets', 'v4', credentials=creds)
 
 # 메시지에서 데이터 추출하는 함수
 def extract_data_from_message(data):
-    if len(data) >3:
-        name = data.get('name', '')
-        age = data.get('age', '')
-        address = data.get('address', '')
-        running_time = data.get('running_time', '')
-        running_pace = data.get('running_pace', '')
-        entry_path = data.get('entry_path', '')
-        self_ex = data.get('self_ex', '')
-        return [name, age, address, running_time, running_pace, entry_path, self_ex]    
-    else:
-        date_time = data.get('date_time')
-        name = data.get('name')  
-        return [date_time, name]     
-        
-
-# 메시지에서 데이터 추출하는 함수
-def extract_enter_message(data):
     date_time = data.get('date_time')
     name = data.get('name', '')
+    age = data.get('age', '')
+    address = data.get('address', '')
+    running_time = data.get('running_time', '')
+    running_pace = data.get('running_pace', '')
+    entry_path = data.get('entry_path', '')
+    self_ex = data.get('self_ex', '')
 
-    return [date_time, name]
+    return [date_time,name, age, address, running_time, running_pace, entry_path, self_ex]
 
 # 시트에 데이터 추가하는 함수
 def append_data_to_sheet(values):
     service = build('sheets', 'v4', credentials=creds)
-    if len(values)>2:
-        sheet_name = '자기소개(2021.12이전)'  # 시트 이름
-    else:
-        sheet_name = '입장일'
-    
-    range_name = f'{sheet_name}!A:G'
+    sheet_name = '자기소개모음'  # 시트 이름
+    range_name = f'{sheet_name}!A:H'
     value_input_option = 'USER_ENTERED'
 
     # 시트 데이터 가져오기
@@ -58,7 +43,7 @@ def append_data_to_sheet(values):
     last_row = len(values) + 1
 
     # 새 데이터 추가할 범위 설정
-    new_range = f'{sheet_name}!A{last_row}:G{last_row}'
+    new_range = f'{sheet_name}!A{last_row}:H{last_row}'
 
     # 새 데이터 설정
     new_values = [extract_data_from_message(data)]
@@ -75,17 +60,12 @@ def add_message_data_to_sheet(data):
     values = extract_data_from_message(data)
     append_data_to_sheet(values)
 
-with open('./Talk_2023.5.1 12_15-1.txt', 'r', encoding="utf-8") as f:
+with open('./Talk_2023.5.1 12_15-4.txt', 'r', encoding="utf-8") as f:
     data = {}
     for line in f:
         line = line.strip()
-        if "님이 들어왔습니다." in line:
-            data2 = {}
-            parts = line.strip().split(':')
-            data2['date_time'] = parts[0]+":"+parts[1] 
-            data2['name'] = parts[2].replace("님이 들어왔습니다.","")
-
         if "1)이름" in line: #startswith가 아니었음
+            data['date_time'] = line.strip().split(':')[0]+":"+line.strip().split(':')[1].split(',')[0]
             try:
                 data['name'] = line.split(":")[3].strip()
                 line = f.readline().strip()

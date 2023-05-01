@@ -60,7 +60,7 @@ def add_message_data_to_sheet(data):
     values = extract_data_from_message(data)
     append_data_to_sheet(values)
 
-with open('./Talk_2023.5.1 12_15-2.txt', 'r', encoding="utf-8") as f:
+with open('./Talk_2023.5.1 12_15-3.txt', 'r', encoding="utf-8") as f:
     data = {}
     for line in f:
         line = line.strip()
