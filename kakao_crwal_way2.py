@@ -1,4 +1,5 @@
 import time
+import datetime
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
@@ -31,7 +32,7 @@ def extract_data_from_message(data):
 # 시트에 데이터 추가하는 함수
 def append_data_to_sheet(values):
     service = build('sheets', 'v4', credentials=creds)
-    sheet_name = '자기소개모음'  # 시트 이름
+    sheet_name = '테스트시트'  # 시트 이름
     range_name = f'{sheet_name}!A:H'
     value_input_option = 'USER_ENTERED'
 
@@ -60,12 +61,15 @@ def add_message_data_to_sheet(data):
     values = extract_data_from_message(data)
     append_data_to_sheet(values)
 
-with open('./Talk_2023.5.1 12_15-4.txt', 'r', encoding="utf-8") as f:
+with open('./Talk_2023.5.1 12_15-5.txt', 'r', encoding="utf-8") as f:
     data = {}
     for line in f:
         line = line.strip()
         if "1)이름" in line: #startswith가 아니었음
-            data['date_time'] = line.strip().split(':')[0]+":"+line.strip().split(':')[1].split(',')[0]
+            #텍스트를 날짜로 인식하게하는 과정 추가
+            date_string = line.strip().split(':')[0]+":"+line.strip().split(':')[1].split(',')[0]
+            date_string = date_string.replace('오전', 'AM').replace('오후', 'PM')
+            data['date_time'] = str(datetime.datetime.strptime(date_string, '%Y. %m. %d. %p %I:%M'))
             try:
                 data['name'] = line.split(":")[3].strip()
                 line = f.readline().strip()
