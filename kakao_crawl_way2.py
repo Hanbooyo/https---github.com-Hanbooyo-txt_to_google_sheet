@@ -3,6 +3,8 @@ import datetime
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
 
+#Open-Korean-Text
+
 # 구글 시트 API 사용을 위한 권한 설정
 SERVICE_ACCOUNT_FILE = './creds.json'
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets']
@@ -32,7 +34,7 @@ def extract_data_from_message(data):
 # 시트에 데이터 추가하는 함수
 def append_data_to_sheet(values):
     service = build('sheets', 'v4', credentials=creds)
-    sheet_name = '테스트시트'  # 시트 이름
+    sheet_name = '자기소개모음'  # 시트 이름
     range_name = f'{sheet_name}!A:H'
     value_input_option = 'USER_ENTERED'
 
@@ -61,7 +63,7 @@ def add_message_data_to_sheet(data):
     values = extract_data_from_message(data)
     append_data_to_sheet(values)
 
-with open('./Talk_2023.5.1 12_15-5.txt', 'r', encoding="utf-8") as f:
+with open('./new_crew.txt', 'r', encoding="utf-8") as f:
     data = {}
     for line in f:
         line = line.strip()
@@ -80,15 +82,19 @@ with open('./Talk_2023.5.1 12_15-5.txt', 'r', encoding="utf-8") as f:
             if data['name'] and data['name'] != '방장봇':
                 if line.startswith('2)'):
                     data['age'] = line.split(':')[1].strip()
+                    print("age",data['age'])
                     line = f.readline().strip()
                     if line.startswith('3)'):
                         data['address'] = line.split(':')[1].strip()
+                        print("address",data['address'])
                         line = f.readline().strip()
                         if line.startswith('4)'):
                             data['running_time'] = line.split(':')[1]
+                            print("running_time",data['running_time'])
                             line = f.readline().strip()
                             if line.startswith('5)'):
                                 data['running_pace'] = line.split(':')[1].strip()
+                                print("running_pace",data['running_pace'])
                                 line = f.readline().strip()
                                 if line.startswith('6)'):
                                     data['entry_path'] = line.split(':')[1].strip()
