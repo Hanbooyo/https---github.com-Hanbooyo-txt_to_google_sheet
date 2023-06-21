@@ -63,7 +63,7 @@ def add_message_data_to_sheet(data):
     values = extract_data_from_message(data)
     append_data_to_sheet(values)
 
-with open('./new_crew.txt', 'r', encoding="utf-8") as f:
+with open('./Talk_2023.6.21 15_21-6.txt', 'r', encoding="utf-8") as f:
     data = {}
     for line in f:
         line = line.strip()
@@ -88,6 +88,8 @@ with open('./new_crew.txt', 'r', encoding="utf-8") as f:
                         data['address'] = line.split(':')[1].strip()
                         print("address",data['address'])
                         line = f.readline().strip()
+                        if line.startswith('(단'):
+                            line = f.readline().strip()
                         if line.startswith('4)'):
                             data['running_time'] = line.split(':')[1]
                             print("running_time",data['running_time'])
